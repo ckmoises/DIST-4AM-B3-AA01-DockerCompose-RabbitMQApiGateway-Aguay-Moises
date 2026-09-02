@@ -1,0 +1,13 @@
+@Vehiculo.Api_HostAddress = http://localhost:5067
+
+#if (EnableOpenAPI)
+GET {{Vehiculo.Api_HostAddress}}/openapi/v1.json
+Accept: application/json
+
+###
+#endif
+
+GET {{Vehiculo.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,13 @@
+@Categoria.Api_HostAddress = http://localhost:5114
+
+#if (EnableOpenAPI)
+GET {{Categoria.Api_HostAddress}}/openapi/v1.json
+Accept: application/json
+
+###
+#endif
+
+GET {{Categoria.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

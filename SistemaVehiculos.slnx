@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ApiGateway/ApiGateway.csproj" />
+  <Project Path="Categoria.Api/Categoria.Api.csproj" />
+  <Project Path="Vehiculo.Api/Vehiculo.Api.csproj" />
+</Solution>

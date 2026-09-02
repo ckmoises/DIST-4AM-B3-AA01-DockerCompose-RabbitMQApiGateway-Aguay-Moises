@@ -1,0 +1,58 @@
+services:
+  rabbitmq:
+    image: rabbitmq:4-management
+    container_name: rabbitmqVehiculos
+    ports:
+      - "5674:5672"
+      - "15674:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  categoria:
+    build:
+      context: .
+      dockerfile: Categoria.Api/Dockerfile
+    container_name: categoria-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__InventarioConnection=Server=host.docker.internal,1433;Database=DB_Categoria;User Id=usuario_inventariosA;Password=admin12;TrustServerCertificate=True;Encrypt=false;
+      - RabbitMQ__HostName=rabbitmq
+    depends_on:
+      - rabbitmq
+    ports:
+      - "5200:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  vehiculo:
+    build:
+      context: .
+      dockerfile: Vehiculo.Api/Dockerfile
+    container_name: vehiculo-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__LibrosConnection=Server=host.docker.internal,1433;Database=DB_Vehiculo;User Id=usuario_librosA;Password=admin;TrustServerCertificate=True;Encrypt=false;
+      - RabbitMQ__HostName=rabbitmq
+    depends_on:
+      - rabbitmq
+    ports:
+      - "5300:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  apigateway:
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile
+    container_name: apigateway-vehiculos
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ReverseProxy__Clusters__categoriasCluster__Destinations__categoriasDestination__Address=http://categoria:8080/
+      - ReverseProxy__Clusters__vehiculosCluster__Destinations__vehiculosDestination__Address=http://vehiculo:8080/
+    depends_on:
+      - categoria
+      - vehiculo
+    ports:
+      - "9100:8080"
+
