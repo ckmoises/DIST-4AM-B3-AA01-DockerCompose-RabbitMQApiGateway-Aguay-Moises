@@ -1,4 +1,4 @@
-﻿# Sistema de Vehiculos (Arquitectura de Microservicios)
+# Sistema de Vehiculos (Arquitectura de Microservicios)
 
 Este proyecto es un sistema basado en una arquitectura de microservicios construido con **.NET**. Esta compuesto por un API Gateway y dos microservicios independientes (`Categoria.Api` y `Vehiculo.Api`) que utilizan **RabbitMQ** para la comunicacion asincrona y **SQL Server** como motor de bases de datos relacional.
 
@@ -100,11 +100,27 @@ docker-compose up --build -d
 
 Se recomienda realizar todas las peticiones a traves del **API Gateway** y no a los microservicios individuales directamente.
 
-La URL base de la aplicacion es:
+> **Importante:** Las siguientes URLs funcionan unicamente en tu maquina local **despues de ejecutar** `docker-compose up --build -d`. No son accesibles desde internet.
 
-`
-http://localhost:9100
-`
+> **Nota:** La raiz `http://localhost:9100/` devuelve 404 por diseno. El API Gateway solo enruta las rutas declaradas en su configuracion.
+
+### Endpoints disponibles via API Gateway (Puerto 9100)
+
+| Recurso | URL |
+|---|---|
+| Categorias (API) | [http://localhost:9100/api/categorias](http://localhost:9100/api/categorias) |
+| Vehiculos (API) | [http://localhost:9100/api/vehiculos](http://localhost:9100/api/vehiculos) |
+| Swagger - Categorias | [http://localhost:9100/swagger/categoria/index.html](http://localhost:9100/swagger/categoria/index.html) |
+| Swagger - Vehiculos | [http://localhost:9100/swagger/vehiculo/index.html](http://localhost:9100/swagger/vehiculo/index.html) |
+
+### Acceso directo por microservicio (sin Gateway)
+
+| Servicio | URL |
+|---|---|
+| Categoria API | [http://localhost:5200](http://localhost:5200) |
+| Vehiculo API | [http://localhost:5300](http://localhost:5300) |
+| RabbitMQ Admin Panel | [http://localhost:15674](http://localhost:15674) (Usuario: `guest` / Contrasena: `guest`) |
+
 
 ---
 
